@@ -1,0 +1,2 @@
+flex lexer.lex && gcc -o lexer lex.yy.c -lfl
+./lexer test1.txt
