@@ -5,11 +5,13 @@
 
 DIGIT		[0-9]
 IDENT		[a-z][a-zA-Z0-9]*
+ALPHANUM    [a-zA-Z0-9]
 WHITESPACE	[ \t\0]
 WHITESPACENL	[\n\r]
 INVALIDSTART	[0-9|_][a-zA-Z0-9]*
 INVALIDEND	[a-zA-Z][a-zA-Z0-9|_]*[_]
 COMMENTS	[##].*
+
 
 %%
 "function"	{printf("FUNCTION\n"); currentColumn += yyleng;} /* Reserved Words */
@@ -62,20 +64,20 @@ COMMENTS	[##].*
 "["	{printf("L_SQUARE_BRACKET\n"); currentColumn += yyleng;}
 "]"	{printf("R_SQUARE_BRACKET\n"); currentColumn += yyleng;}
 
-{IDENT}		{printf("IDENT\n"); currentColumn += yyleng;} /* Identifiers */
+[a-zA-Z]({ALPHANUM}|_+{ALPHANUM})*		{printf("IDENT %s\n", yytext); currentColumn += yyleng;} /* Identifiers */
 
-{DIGIT}+	{printf("INT\n"); currentColumn += yyleng;} /* Numbers */
+{DIGIT}+        {printf("NUMBER %s\n", yytext); currentColumn += yyleng;} /* Numbers */
 
-{WHITESPACE}+ 	{printf("WHITESPACE\n"); currentColumn += yyleng;} /* WHITESPACE */
-{WHITESPACENL}+ {printf("WHITESPACENL\n"); currentColumn = 0; currentLine += 1;} /* WHITESPACENL */
+{WHITESPACE}+ 	{currentColumn += yyleng;} /* WHITESPACE */
+{WHITESPACENL}+ {currentColumn = 0; currentLine += 1;} /* WHITESPACENL */
 
-{INVALIDSTART}	{printf("Error at line %d, column $d: identifier \"%s\" must begin with a letter\n",
+{COMMENTS}	{currentLine += 1; currentColumn = 0;} /*Comments on a single line */
+
+{INVALIDSTART}	{printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter\n",
 		    currentLine, currentColumn, yytext); exit(1);} /*Invalid identifiers: must start with a letter */
 
 {INVALIDEND}	{printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n",
 		    currentLine, currentColumn, yytext); exit(1);} /*Invalid identifiers: cannot end with an underscore */
-
-{COMMENTS}	{currentLine += 1; currentColumn = 0;} /*Comments on a single line */
 
 .		{printf("Error at line %d, column %d: unrecognized symbol \"%s\"\n",
                     currentLine, currentColumn, yytext); exit(1);}                        /* Catch anything else */
