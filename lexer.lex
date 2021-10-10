@@ -7,7 +7,8 @@ DIGIT		[0-9]
 IDENT		[a-z][a-zA-Z0-9]*
 WHITESPACE	[ \t\0]
 WHITESPACENL	[\n\r]
-INVALIDIDENT	[0-9|_][a-zA-Z0-9]*[_]
+INVALIDSTART	[0-9|_][a-zA-Z0-9]*
+INVALIDEND	[a-zA-Z][a-zA-Z0-9|_]*[_]
 COMMENTS	[##].*
 
 %%
@@ -68,8 +69,11 @@ COMMENTS	[##].*
 {WHITESPACE}+ 	{printf("WHITESPACE\n"); currentColumn += yyleng;} /* WHITESPACE */
 {WHITESPACENL}+ {printf("WHITESPACENL\n"); currentColumn = 0; currentLine += 1;} /* WHITESPACENL */
 
-{INVALIDIDENT}	{printf("Error at line %d, column %d: identifier \"%s\" must begin with a letter and cannot end with an underscore\n",
-		    currentLine, currentColumn, yytext); exit(1);} /*Invalid identifiers: must begin with a letter, cannot end with an underscore */
+{INVALIDSTART}	{printf("Error at line %d, column $d: identifier \"%s\" must begin with a letter\n",
+		    currentLine, currentColumn, yytext); exit(1);} /*Invalid identifiers: must start with a letter */
+
+{INVALIDEND}	{printf("Error at line %d, column %d: identifier \"%s\" cannot end with an underscore\n",
+		    currentLine, currentColumn, yytext); exit(1);} /*Invalid identifiers: cannot end with an underscore */
 
 {COMMENTS}	{currentLine += 1; currentColumn = 0;} /*Comments on a single line */
 
