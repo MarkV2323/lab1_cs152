@@ -52,7 +52,7 @@ COMMENTS	[##].*
 "<"	{printf("LT\n"); currentColumn += yyleng;}
 ">"	{printf("GT\n"); currentColumn += yyleng;}
 "<="	{printf("LTE\n"); currentColumn += yyleng;}
-"=>"	{printf("GTE\n"); currentColumn += yyleng;}
+">="	{printf("GTE\n"); currentColumn += yyleng;}
 "<>"	{printf("NEQ\n"); currentColumn += yyleng;}
 
 ";"     {printf("SEMICOLON\n"); currentColumn += yyleng;} /* Other Special Symbols */
