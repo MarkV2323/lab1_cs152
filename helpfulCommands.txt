@@ -5,3 +5,6 @@ flex mini_l.lex && gcc -o lexer lex.yy.c -lfl
 ./lexer tests/fibonacci.txt > output/outFib.txt
 ./lexer tests/primes.txt > output/outPrimes.txt
 ./lexer tests/mytest.txt > output/outTests.txt
+diff -w output/outFib.txt expectedOut/fibExpected.txt
+diff -w output/outPrimes.txt expectedOut/primesExpected.txt
+diff -w output/outTests.txt expectedOut/myExpected.txt
