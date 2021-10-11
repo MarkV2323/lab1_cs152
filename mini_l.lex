@@ -4,7 +4,6 @@
 %}
 
 DIGIT		[0-9]
-IDENT		[a-z][a-zA-Z0-9]*
 ALPHANUM    [a-zA-Z0-9]
 WHITESPACE	[ \t\0]
 WHITESPACENL	[\n\r]

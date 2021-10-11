@@ -1,2 +1,7 @@
-flex lexer.lex && gcc -o lexer lex.yy.c -lfl
-./lexer test1.txt
+flex mini_l.lex && gcc -o lexer lex.yy.c -lfl
+./lexer tests/test1.txt
+./lexer tests/test2.txt
+./lexer tests/test3.txt
+./lexer tests/fibonacci.txt > output/outFib.txt
+./lexer tests/primes.txt > output/outPrimes.txt
+./lexer tests/mytest.txt > output/outTests.txt
